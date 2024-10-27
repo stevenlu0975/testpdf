@@ -22,17 +22,22 @@ public class Main {
     private static StringBuilder stringBuilder = new StringBuilder();
     public static void main(String[] args) throws IOException {
         // 加載PDF檔案
-        PdfDocument pdfDoc = new PdfDocument(new PdfReader("C:\\Users\\2400822\\Desktop\\77777.pdf"), new PdfWriter("C:\\Users\\2400822\\Desktop\\77776.pdf"));
+        long currentTimeMillis = System.currentTimeMillis();
+        PdfDocument pdfDoc = new PdfDocument(new PdfReader("C:\\workspace\\pdf\\item\\77777.pdf"), new PdfWriter("C:\\workspace\\pdf\\item\\77776.pdf"));
 
         PdfPage page = pdfDoc.getPage(2);
 
         Rectangle mediaBox = page.getMediaBox();
         System.out.println(mediaBox);
-        TextLocationStrategy textLocationStrategy = new TextLocationStrategy("公司名稱/人數規模 部門/職稱/工作內容 起訖年月(西元) 離職原因 離職月薪 年薪");
-        PdfCanvasProcessor parser = new PdfCanvasProcessor(textLocationStrategy);
+//        TextLocationStrategy textLocationStrategy = new TextLocationStrategy("公司名稱/人數規模 部門/職稱/工作內容 起訖年月(西元) 離職原因 離職月薪 年薪");
+        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("公司名稱/人數規模","");
+        PdfCanvasProcessor parser = new PdfCanvasProcessor(textAreaRetrieveStrategy);
         parser.processPageContent(page);
+        RectanglePoints rectanglePoints = textAreaRetrieveStrategy.getRectanglePoints();
+
         // (x, y, width, height)
-        Rectangle cropBox = new Rectangle(textLocationStrategy.getReX(), textLocationStrategy.getReY(), textLocationStrategy.getXDifference(), textLocationStrategy.getYDifference());
+        Rectangle cropBox = new Rectangle(rectanglePoints.getTopLeftX(), rectanglePoints.getTopLineY(), rectanglePoints.getLength(), rectanglePoints.getWidth());
+        //因此會把 PDF 內不在此範圍內的內容視為「被裁剪掉」，從而實現分割 PDF 的效果。
         page.setCropBox(cropBox);
         LocationTextExtractionStrategy strategy = new LocationTextExtractionStrategy() {
             public void eventOccurred(IEventData data, EventType type) {
@@ -58,7 +63,7 @@ public class Main {
         //textLocationStrategy.getResultantText();
         String text = PdfTextExtractor.getTextFromPage(page, strategy);
         //System.out.println(text);
-        System.out.println("裁切后的页面大小: " + cropBox);
+        System.out.println("\n裁切后的页面大小: " + cropBox);
         parseTableFromText(stringBuilder.toString());
         // 提取每一頁的文本
 //        for (int page = 1; page <= pdfDoc.getNumberOfPages(); page++) {
@@ -70,6 +75,10 @@ public class Main {
 //        }
         // 關閉文件
         pdfDoc.close();
+        long endTime = System.currentTimeMillis();
+        System.out.println("start: "+currentTimeMillis);
+        System.out.println("end: "+endTime);
+        System.out.println("total: "+(endTime-currentTimeMillis));
     }
 
     // 解析表格數據的方法
