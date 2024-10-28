@@ -58,7 +58,7 @@ public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
 
 
         if(lastY!=-1 && lastY!=currentY){
-            //超過20才算換行
+            //超過10才算換行
             if(Math.abs(currentY-lastY)<Y_OFFSET){
                 currentLine.append(text);
                 tempRowData.add(dataDto);

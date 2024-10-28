@@ -60,16 +60,16 @@ public class RectanglePoints {
                 float cell = dto.getCell();
                 float floor =dto.getFloor();
                 //找最左邊的點
-                if(lx<leftmostX && (topLeftX-lx)<X_OFFSET){
+                if(lx<leftmostX ){
                     leftmostX =lx;
                 }
                 //找最右邊的點
-                if(rx>rightmostX && (rx-topRightX)<X_OFFSET){
+                if(rx>rightmostX ){
                     rightmostX = rx;
                 }
 
                 //找最後一行的最左邊點
-                if(lx<bottomLeftMostX && (topLeftX-lx<X_OFFSET)){
+                if(lx<bottomLeftMostX){
                     bottomLeftMostX = lx;
 
                 }
