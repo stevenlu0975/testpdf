@@ -29,8 +29,10 @@ public class Main {
 
         Rectangle mediaBox = page.getMediaBox();
         System.out.println(mediaBox);
-//        TextLocationStrategy textLocationStrategy = new TextLocationStrategy("公司名稱/人數規模 部門/職稱/工作內容 起訖年月(西元) 離職原因 離職月薪 年薪");
-        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("電腦軟硬體、應用系統、程式語言","實作經驗","【專業資格考試或認證");
+//        TextAreaRetrieveStrategy textAreaRetrieveStrategy  = new TextAreaRetrieveStrategy("公司名稱/人數規模","年薪","是否曾任職於IBM");
+//        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("語文 聽","撰寫","【教育程度】(請填寫高中");
+        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("稱謂 ","職業 ","【教育程度】(請填寫高中");
+//        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("教育程度 學校名稱 ","","【電腦技能】較專精之電腦軟硬體、應用系統及程式語言");
         PdfCanvasProcessor parser = new PdfCanvasProcessor(textAreaRetrieveStrategy);
         parser.processPageContent(page);
         RectanglePoints rectanglePoints = textAreaRetrieveStrategy.getRectanglePoints();
@@ -39,32 +41,33 @@ public class Main {
         Rectangle cropBox = new Rectangle(rectanglePoints.getBotttomLeftX(), rectanglePoints.getBottomLineY(), rectanglePoints.getWidth(), rectanglePoints.getHeight());
         //因此會把 PDF 內不在此範圍內的內容視為「被裁剪掉」，從而實現分割 PDF 的效果。
         page.setCropBox(cropBox);
-        LocationTextExtractionStrategy strategy = new LocationTextExtractionStrategy() {
-            public void eventOccurred(IEventData data, EventType type) {
-                if (data instanceof TextRenderInfo) {
-                    TextRenderInfo textInfo = (TextRenderInfo) data;
-                    Rectangle rect = textInfo.getBaseline().getBoundingRectangle();
-
-                    // 判断文本是否在裁剪框内
-                    if (cropBox.contains(rect)) {
-                        // 文本在裁剪框内，处理该文本
-                        //innerText +=textInfo.getText();
-                        stringBuilder.append(textInfo.getText());
-                        System.out.print(textInfo.getText());
-                    } else {
-                        // 文本在裁剪框外
-                        //System.out.print(textInfo.getText());
-                    }
-                }
-                super.eventOccurred(data, type);
-            }
-        };
-
+//        LocationTextExtractionStrategy strategy = new LocationTextExtractionStrategy() {
+//            public void eventOccurred(IEventData data, EventType type) {
+//                if (data instanceof TextRenderInfo) {
+//                    TextRenderInfo textInfo = (TextRenderInfo) data;
+//                    Rectangle rect = textInfo.getBaseline().getBoundingRectangle();
+//
+//                    // 判断文本是否在裁剪框内
+//                    if (cropBox.contains(rect)) {
+//                        // 文本在裁剪框内，处理该文本
+//                        //innerText +=textInfo.getText();
+//                        stringBuilder.append(textInfo.getText());
+//                        System.out.print(textInfo.getText());
+//                    } else {
+//                        // 文本在裁剪框外
+//                        //System.out.print(textInfo.getText());
+//                    }
+//                }
+//                super.eventOccurred(data, type);
+//            }
+//        };
+        CropboxContentStrategy strategy = new CropboxContentStrategy(cropBox);
         //textLocationStrategy.getResultantText();
         String text = PdfTextExtractor.getTextFromPage(page, strategy);
         //System.out.println(text);
         System.out.println("\n裁切后的页面大小: " + cropBox);
-        parseTableFromText(stringBuilder.toString());
+        //parseTableFromText(stringBuilder.toString());
+        parseTableFromText(strategy.getStringBuilder().toString());
         // 提取每一頁的文本
 //        for (int page = 1; page <= pdfDoc.getNumberOfPages(); page++) {
 //            String text = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(page), new SimpleTextExtractionStrategy());

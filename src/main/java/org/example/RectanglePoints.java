@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @ToString
 public class RectanglePoints {
+    private static final float X_OFFSET=10;// 不得插超過+-20
     private float topLeftX, topRightX,topLineY;
     private float botttomLeftX, bottomRightX,bottomLineY;
     private float height;
@@ -47,7 +48,7 @@ public class RectanglePoints {
         float rightmostX=topRightX;
         float topmostY=topLineY;
         float bottommostY=matrix.getLast().getFirst().getPointY();
-        float bottomLeftMostX=matrix.getLast().getFirst().getPointStartX();
+        float bottomLeftMostX=topLeftX;
         float topCell=matrix.getFirst().getFirst().getCell();
         float bottomFloor=matrix.getLast().getLast().getFloor();
         for(List<RowDataDto> list : matrix){
@@ -59,20 +60,21 @@ public class RectanglePoints {
                 float cell = dto.getCell();
                 float floor =dto.getFloor();
                 //找最左邊的點
-                if(lx<leftmostX){
+                if(lx<leftmostX && (topLeftX-lx)<X_OFFSET){
                     leftmostX =lx;
                 }
-                //找最後篇的點
-                if(rx>rightmostX){
+                //找最右邊的點
+                if(rx>rightmostX && (rx-topRightX)<X_OFFSET){
                     rightmostX = rx;
                 }
-                //找下面一行y
-                if(y<bottommostY){
-                    bottommostY = y;
-                }
+
                 //找最後一行的最左邊點
-                if(y==bottommostY && lx<bottomLeftMostX){
+                if(lx<bottomLeftMostX && (topLeftX-lx<X_OFFSET)){
                     bottomLeftMostX = lx;
+
+                }
+                if(y<bottommostY){
+                    bottommostY=y;
                 }
                 //找cell
                 if(cell>topCell){

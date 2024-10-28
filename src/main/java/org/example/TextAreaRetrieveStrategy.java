@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
+    private static final float Y_OFFSET=10;//超過10才算換行
     private String firstRowStartText;
     private String firstRowEndText;
     private String boundaryText;
@@ -57,6 +58,12 @@ public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
 
 
         if(lastY!=-1 && lastY!=currentY){
+            //超過20才算換行
+            if(Math.abs(currentY-lastY)<Y_OFFSET){
+                currentLine.append(text);
+                tempRowData.add(dataDto);
+                return;
+            }
             //判斷左上頂點
             if(state == TextAreaStateEnum.None && currentLine.toString().contains(firstRowStartText)){
                 int index = getIndexFromRowList(firstRowStartText,tempRowData);
@@ -112,7 +119,7 @@ public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
             // 反向遍歷
             for (int i = tempRowData.size() - 1; i >= 0; i--) {
                 RowDataDto data = tempRowData.get(i);
-                if(data.getText().equals("/")){
+                if(data.getText().equals("/")||data.getText().isBlank()){
                     continue;
                 }
                 if (str.contains(data.getText())) {
@@ -124,7 +131,7 @@ public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
             // 正向遍歷
             for (int i = 0; i < tempRowData.size(); i++) {
                 RowDataDto data = tempRowData.get(i);
-                if(data.getText().equals("/")){
+                if(data.getText().equals("/")|| data.getText().isBlank() ){
                     continue;
                 }
                 if (str.contains(data.getText())) {
