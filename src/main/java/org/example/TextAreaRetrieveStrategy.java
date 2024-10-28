@@ -50,8 +50,10 @@ public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
         float currentY = renderInfo.getBaseline().getStartPoint().get(1);
         float currentLX = renderInfo.getBaseline().getStartPoint().get(0);
         float currentRX = renderInfo.getBaseline().getEndPoint().get(0);
+        float currentCell= renderInfo.getAscentLine().getEndPoint().get(1);
+        float currentFloor =renderInfo.getDescentLine().getStartPoint().get(1);
         lastRowWidth = renderInfo.getAscentLine().getEndPoint().get(1)-renderInfo.getDescentLine().getStartPoint().get(1);
-        RowDataDto dataDto = new RowDataDto(currentLX,currentRX,currentY,text);
+        RowDataDto dataDto = new RowDataDto(currentLX,currentRX,currentY,currentCell,currentFloor,text);
 
 
         if(lastY!=-1 && lastY!=currentY){
@@ -74,24 +76,22 @@ public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
                     state = TextAreaStateEnum.TopRightFound;
                 }
             }
-            //判斷到header才加進lsit
-            if(state != TextAreaStateEnum.None){
-                rectanglePoints.addRowData(tempRowData);
-            }
+
             //判斷結束
             if(state == TextAreaStateEnum.TopRightFound){
+                //只擷取一行
                 if(boundaryText.equals("")){
                     state = TextAreaStateEnum.None;
-                    rectanglePoints.setBottomLineY(rectanglePoints.getTopLineY()-lastRowWidth);
-                    rectanglePoints.calculateLengthWidth();
+                    rectanglePoints.calculateWidthHeight();
                 }
                 else if(currentLine.toString().contains(boundaryText)){
                     state = TextAreaStateEnum.None;
-                    rectanglePoints.calculateLengthWidth();
+                    rectanglePoints.calculateWidthHeight();
+
                 }
 
             }
-
+            //判斷到header才加進lsit
             if(state != TextAreaStateEnum.None){
                 rectanglePoints.addRowData(tempRowData);
             }

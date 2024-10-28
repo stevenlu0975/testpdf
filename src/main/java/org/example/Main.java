@@ -23,20 +23,20 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // 加載PDF檔案
         long currentTimeMillis = System.currentTimeMillis();
-        PdfDocument pdfDoc = new PdfDocument(new PdfReader("C:\\workspace\\pdf\\item\\77777.pdf"), new PdfWriter("C:\\workspace\\pdf\\item\\77776.pdf"));
+        PdfDocument pdfDoc = new PdfDocument(new PdfReader("C:\\workspace\\pdf\\77777.pdf"), new PdfWriter("C:\\workspace\\pdf\\77776.pdf"));
 
-        PdfPage page = pdfDoc.getPage(2);
+        PdfPage page = pdfDoc.getPage(1);
 
         Rectangle mediaBox = page.getMediaBox();
         System.out.println(mediaBox);
 //        TextLocationStrategy textLocationStrategy = new TextLocationStrategy("公司名稱/人數規模 部門/職稱/工作內容 起訖年月(西元) 離職原因 離職月薪 年薪");
-        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("公司名稱/人數規模","");
+        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("電腦軟硬體、應用系統、程式語言","實作經驗","【專業資格考試或認證");
         PdfCanvasProcessor parser = new PdfCanvasProcessor(textAreaRetrieveStrategy);
         parser.processPageContent(page);
         RectanglePoints rectanglePoints = textAreaRetrieveStrategy.getRectanglePoints();
 
         // (x, y, width, height)
-        Rectangle cropBox = new Rectangle(rectanglePoints.getTopLeftX(), rectanglePoints.getTopLineY(), rectanglePoints.getLength(), rectanglePoints.getWidth());
+        Rectangle cropBox = new Rectangle(rectanglePoints.getBotttomLeftX(), rectanglePoints.getBottomLineY(), rectanglePoints.getWidth(), rectanglePoints.getHeight());
         //因此會把 PDF 內不在此範圍內的內容視為「被裁剪掉」，從而實現分割 PDF 的效果。
         page.setCropBox(cropBox);
         LocationTextExtractionStrategy strategy = new LocationTextExtractionStrategy() {

@@ -12,5 +12,7 @@ public class RowDataDto {
     private float pointStartX;
     private float pointEndX;
     private float pointY;
+    private float cell;
+    private float floor;
     private String text;
 }
