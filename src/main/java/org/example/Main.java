@@ -23,9 +23,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // 加載PDF檔案
         long currentTimeMillis = System.currentTimeMillis();
-        PdfDocument pdfDoc = new PdfDocument(new PdfReader("C:\\Users\\2400822\\Desktop\\77777.pdf"), new PdfWriter("C:\\Users\\2400822\\Desktop\\77776.pdf"));
+        String path="C:\\workspace\\pdf\\"; //C:\Users\2400822\Desktop\\ C:\workspace\pdf\\
+        PdfDocument pdfDoc = new PdfDocument(new PdfReader(path+"77777.pdf"), new PdfWriter(path+"77776.pdf"));
 
-        PdfPage page = pdfDoc.getPage(2);
+        PdfPage page = pdfDoc.getPage(1);
 
         Rectangle mediaBox = page.getMediaBox();
         System.out.println(mediaBox);
@@ -33,10 +34,10 @@ public class Main {
 //        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("語文 聽","撰寫","【教育程度】(請填寫高中");
 //        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("稱謂 ","職業 ","【教育程度】(請填寫高中");
 //        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("教育程度 學校名稱 ","","【電腦技能】較專精之電腦軟硬體、應用系統及程式語言");
-//        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("電腦軟硬體、應用系統、程式語言 瞭解程","","【專業資格考試或認證】");
+        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("電腦軟硬體、應用系統、程式語言 瞭解程","","【專業資格考試或認證】");
 //        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("專業證照、政府/考試名","","【任用諮詢】請");
 //        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("姓名 公司 職稱","","請翻面，背面尚有資料待填");
-        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("是否曾任職於IBM_台灣國際商業機器(股)公司：","","【信用資料】");
+//        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("是否曾任職於IBM_台灣國際商業機器(股)公司：","","【信用資料】");
         PdfCanvasProcessor parser = new PdfCanvasProcessor(textAreaRetrieveStrategy);
         parser.processPageContent(page);
         RectanglePoints rectanglePoints = textAreaRetrieveStrategy.getRectanglePoints();

@@ -48,7 +48,6 @@ public class RectanglePoints {
         float rightmostX=topRightX;
         float topmostY=topLineY;
         float bottommostY=matrix.getLast().getFirst().getPointY();
-        float bottomLeftMostX=topLeftX;
         float topCell=matrix.getFirst().getFirst().getCell();
         float bottomFloor=matrix.getLast().getLast().getFloor();
         for(List<RowDataDto> list : matrix){
@@ -68,11 +67,6 @@ public class RectanglePoints {
                     rightmostX = rx;
                 }
 
-                //找最後一行的最左邊點
-                if(lx<bottomLeftMostX){
-                    bottomLeftMostX = lx;
-
-                }
                 if(y<bottommostY){
                     bottommostY=y;
                 }
@@ -86,7 +80,7 @@ public class RectanglePoints {
                 }
             }
         }
-        this.setBotttomLeftX(bottomLeftMostX);
+        this.setBotttomLeftX(leftmostX);
         this.setBottomLineY(bottommostY);
         this.width=rightmostX-leftmostX;
         this.height=topCell-bottomFloor;
