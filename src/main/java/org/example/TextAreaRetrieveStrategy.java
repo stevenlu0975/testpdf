@@ -4,6 +4,9 @@ import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
 import com.itextpdf.kernel.pdf.canvas.parser.data.TextRenderInfo;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.LocationTextExtractionStrategy;
+import org.example.model.RectanglePoints;
+import org.example.model.RowDataDto;
+import org.example.model.TextAreaStateEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +20,7 @@ public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
     private List<RowDataDto> tempRowData;
     private float lastY = -1;
     private float lastRowWidth = -1;
-    private  RectanglePoints rectanglePoints;
+    private RectanglePoints rectanglePoints;
     TextAreaStateEnum state=TextAreaStateEnum.None;
     /**
      * 結束判斷為這行最後一個字
@@ -94,11 +97,11 @@ public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
                 else if(currentLine.toString().contains(boundaryText)){
                     state = TextAreaStateEnum.None;
                     rectanglePoints.calculateWidthHeight();
-
                 }
+                // else return?
 
             }
-            //判斷到header才加進lsit
+            //判斷到 header 才加進 list
             if(state != TextAreaStateEnum.None){
                 rectanglePoints.addRowData(tempRowData);
             }
@@ -143,5 +146,5 @@ public class TextAreaRetrieveStrategy extends LocationTextExtractionStrategy {
         return index;
     }
 
-    public RectanglePoints getRectanglePoints(){return rectanglePoints;}
+    public RectanglePoints getRectanglePointsInfo(){return rectanglePoints;}
 }

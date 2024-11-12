@@ -5,25 +5,20 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfCanvasProcessor;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
-import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
-import com.itextpdf.kernel.pdf.canvas.parser.data.TextRenderInfo;
-import com.itextpdf.kernel.pdf.canvas.parser.listener.GlyphTextEventListener;
-import com.itextpdf.kernel.pdf.canvas.parser.listener.LocationTextExtractionStrategy;
-import com.itextpdf.kernel.pdf.canvas.parser.listener.SimpleTextExtractionStrategy;
+import org.example.model.RectanglePoints;
+
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main {
-    private static StringBuilder stringBuilder = new StringBuilder();
+    //private static StringBuilder stringBuilder = new StringBuilder();
     public static void main(String[] args) throws IOException {
         // 加載PDF檔案
         long currentTimeMillis = System.currentTimeMillis();
-        String path="C:\\workspace\\pdf\\"; //C:\Users\2400822\Desktop\\ C:\workspace\pdf\\
+        String path="C:\\workspace\\pdf\\";
         PdfDocument pdfDoc = new PdfDocument(new PdfReader(path+"77777.pdf"), new PdfWriter(path+"77776.pdf"));
 
         PdfPage page = pdfDoc.getPage(1);
@@ -40,47 +35,22 @@ public class Main {
 //        TextAreaRetrieveStrategy textAreaRetrieveStrategy = new TextAreaRetrieveStrategy("是否曾任職於IBM_台灣國際商業機器(股)公司：","","【信用資料】");
         PdfCanvasProcessor parser = new PdfCanvasProcessor(textAreaRetrieveStrategy);
         parser.processPageContent(page);
-        RectanglePoints rectanglePoints = textAreaRetrieveStrategy.getRectanglePoints();
+        RectanglePoints rectanglePoints = textAreaRetrieveStrategy.getRectanglePointsInfo();
 
         // (x, y, width, height)
-        Rectangle cropBox = new Rectangle(rectanglePoints.getBotttomLeftX(), rectanglePoints.getBottomLineY(), rectanglePoints.getWidth(), rectanglePoints.getHeight());
+        Rectangle cropBox = new Rectangle(rectanglePoints.getBottomLeftX(), rectanglePoints.getBottomLineY(), rectanglePoints.getWidth(), rectanglePoints.getHeight());
         //因此會把 PDF 內不在此範圍內的內容視為「被裁剪掉」，從而實現分割 PDF 的效果。
         page.setCropBox(cropBox);
-//        LocationTextExtractionStrategy strategy = new LocationTextExtractionStrategy() {
-//            public void eventOccurred(IEventData data, EventType type) {
-//                if (data instanceof TextRenderInfo) {
-//                    TextRenderInfo textInfo = (TextRenderInfo) data;
-//                    Rectangle rect = textInfo.getBaseline().getBoundingRectangle();
-//
-//                    // 判断文本是否在裁剪框内
-//                    if (cropBox.contains(rect)) {
-//                        // 文本在裁剪框内，处理该文本
-//                        //innerText +=textInfo.getText();
-//                        stringBuilder.append(textInfo.getText());
-//                        System.out.print(textInfo.getText());
-//                    } else {
-//                        // 文本在裁剪框外
-//                        //System.out.print(textInfo.getText());
-//                    }
-//                }
-//                super.eventOccurred(data, type);
-//            }
-//        };
+
+
         CropboxContentStrategy strategy = new CropboxContentStrategy(cropBox);
         //textLocationStrategy.getResultantText();
         String text = PdfTextExtractor.getTextFromPage(page, strategy);
         //System.out.println(text);
-        System.out.println("\n裁切后的页面大小: " + cropBox);
+        System.out.println("\n裁切後的頁面大小: " + cropBox);
         //parseTableFromText(stringBuilder.toString());
         parseTableFromText(strategy.getStringBuilder().toString());
-        // 提取每一頁的文本
-//        for (int page = 1; page <= pdfDoc.getNumberOfPages(); page++) {
-//            String text = PdfTextExtractor.getTextFromPage(pdfDoc.getPage(page), new SimpleTextExtractionStrategy());
-//            System.out.println("Page " + page + ": ");
-//            System.out.println(text);
-//            // 解析文本為表格
-//            //parseTableFromText(text);
-//        }
+
         // 關閉文件
         pdfDoc.close();
         long endTime = System.currentTimeMillis();

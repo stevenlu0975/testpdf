@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 import lombok.*;
 
@@ -12,7 +12,7 @@ public class RowDataDto {
     private float pointStartX;
     private float pointEndX;
     private float pointY;
-    private float cell;
+    private float ceil;
     private float floor;
     private String text;
 }

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.List;
 public class RectanglePoints {
     private static final float X_OFFSET=10;// 不得插超過+-20
     private float topLeftX, topRightX,topLineY;
-    private float botttomLeftX, bottomRightX,bottomLineY;
+    private float bottomLeftX, bottomRightX,bottomLineY;
     private float height;
     @Setter(AccessLevel.NONE)
     private float width;
@@ -27,7 +27,7 @@ public class RectanglePoints {
         this.topLeftX=-1;
         this.topRightX=-1;
         this.topLineY=-1;
-        this.botttomLeftX=-1;
+        this.bottomLeftX =-1;
         this.bottomRightX=-1;
         this.bottomLineY=-1;
     }
@@ -48,7 +48,7 @@ public class RectanglePoints {
         float rightmostX=topRightX;
         float topmostY=topLineY;
         float bottommostY=matrix.getLast().getFirst().getPointY();
-        float topCell=matrix.getFirst().getFirst().getCell();
+        float topCell=matrix.getFirst().getFirst().getCeil();
         float bottomFloor=matrix.getLast().getLast().getFloor();
         for(List<RowDataDto> list : matrix){
             for(RowDataDto dto : list){
@@ -56,7 +56,7 @@ public class RectanglePoints {
                 float lx = dto.getPointStartX();
                 float rx = dto.getPointEndX();
                 float y = dto.getPointY();
-                float cell = dto.getCell();
+                float cell = dto.getCeil();
                 float floor =dto.getFloor();
                 //找最左邊的點
                 if(lx<leftmostX ){
@@ -80,13 +80,13 @@ public class RectanglePoints {
                 }
             }
         }
-        this.setBotttomLeftX(leftmostX);
+        this.setBottomLeftX(leftmostX);
         this.setBottomLineY(bottommostY);
         this.width=rightmostX-leftmostX;
         this.height=topCell-bottomFloor;
         System.out.println();
         System.out.println("top x"+topLeftX+" ~ "+topRightX+" top y"+topLineY);
-        System.out.println("bottom x"+botttomLeftX+" bottom y"+bottomLineY);
+        System.out.println("bottom x"+ bottomLeftX +" bottom y"+bottomLineY);
         System.out.println("leftMost,rightmost "+leftmostX+" , "+rightmostX);
         System.out.println("topMost,bottomMost "+topmostY+" , "+bottommostY);
         System.out.println("cell,floor"+topCell+" , "+bottomFloor);
