@@ -2,7 +2,7 @@ package testpdf;
 
 
 import com.alibaba.fastjson.JSONArray;
-import org.example.javaAPIService.tabula.PdfUtil;
+import org.example.java_api_service.tabula.PdfUtil;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

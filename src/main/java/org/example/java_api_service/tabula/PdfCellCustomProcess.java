@@ -1,4 +1,4 @@
-package org.example.javaAPIService.tabula;
+package org.example.java_api_service.tabula;
 
 import com.alibaba.fastjson.JSONArray;
 import technology.tabula.RectangularTextContainer;

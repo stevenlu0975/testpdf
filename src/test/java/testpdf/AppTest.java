@@ -1,25 +1,14 @@
 package testpdf;
 
-
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
-//import org.example.javaAPIService.pdftool.PdfTableExtractor;
-//import org.example.javaAPIService.pdftool.MyItextTool;
-//import org.example.javaAPIService.pdftool.MySimpleTextExtractionStrategy;
-import org.example.javaAPIService.pdftool.*;
-
-//import com.example.itext.pdftool.MyItextTool;
-//import com.example.itext.pdftool.MySimpleTextExtractionStrategy;
-//import com.example.itext.pdftool.PdfTableExtractor;
+import org.example.java_api_service.pdftool.*;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import java.io.File;
 import java.io.IOException;
-
-
 
 /**
  * Unit test for simple App.
@@ -48,8 +37,6 @@ public class AppTest
      * itext
      * **/
     public void testitext() throws IOException {
-//        String filePath = "C:\\workspace\\pdf\\55555.pdf";
-//        String filePath = "C:\\workspace\\pdf\\test.pdf";
         String filePath = "C:\\workspace\\pdf\\77777.pdf";
         File file = new File(filePath);
         // 加載PDF檔案

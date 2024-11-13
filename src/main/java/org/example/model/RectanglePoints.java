@@ -52,7 +52,6 @@ public class RectanglePoints {
         float bottomFloor=matrix.getLast().getLast().getFloor();
         for(List<RowDataDto> list : matrix){
             for(RowDataDto dto : list){
-              //todo
                 float lx = dto.getPointStartX();
                 float rx = dto.getPointEndX();
                 float y = dto.getPointY();

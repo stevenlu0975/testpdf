@@ -1,4 +1,4 @@
-package org.example.javaAPIService.pdftool;
+package org.example.java_api_service.pdftool;
 
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.canvas.parser.IContentOperator;
@@ -13,7 +13,6 @@ public class MyItextTool {
     * @param page 哪一頁
     * */
     public static String getSpecialContent(PdfPage page, ITextExtractionStrategy strategy){
-        // todo  這個map 幹嘛用的
         HashMap<String, IContentOperator> additionalContentOperators = new HashMap<>();
         PdfCanvasProcessor parser = new PdfCanvasProcessor(strategy, additionalContentOperators);
         parser.processPageContent(page);

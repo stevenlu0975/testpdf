@@ -5,9 +5,6 @@ import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
 import com.itextpdf.kernel.pdf.canvas.parser.data.TextRenderInfo;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.LocationTextExtractionStrategy;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TextLocationStrategy extends LocationTextExtractionStrategy {
 
     private String searchText;
@@ -15,7 +12,7 @@ public class TextLocationStrategy extends LocationTextExtractionStrategy {
     float startX = -1;
     private float lastY = -1;
     private float lastX = -1;
-    private boolean samerow = false;
+    private boolean sameRow = false;
     private float xDifference = 0;
     private float yDifference = 0;
     private float reY = -1;
@@ -51,12 +48,12 @@ public class TextLocationStrategy extends LocationTextExtractionStrategy {
                         yDifference = renderInfo.getAscentLine().getEndPoint().get(1) - renderInfo.getDescentLine().getStartPoint().get(1);
                         System.out.println("yDifference "+yDifference);
                     }
-                    samerow = false;
+                    sameRow = false;
                     currentLine = new StringBuilder(); // 開啟新行
                 }
-                if(!samerow) {
+                if(!sameRow) {
                     startX = renderInfo.getBaseline().getStartPoint().get(0);
-                    samerow = true;
+                    sameRow = true;
                 }
                 // 拼接文字
                 currentLine.append(text);
@@ -67,21 +64,20 @@ public class TextLocationStrategy extends LocationTextExtractionStrategy {
         }
     }
 
-
-    public float getReX() {
-        System.out.println("reX : " + reX);
-        return reX;
-    }
-    public float getReY() {
-        System.out.println("lastY : " + reY);
-        return reY;
-    }
-    public float getXDifference() {
-        System.out.println("xDifferent : " + xDifference);
-        return xDifference;
-    }
-    public float getYDifference() {
-        System.out.println("yDifferent : " + yDifference);
-        return yDifference;
-    }
+//    public float getReX() {
+//        System.out.println("reX : " + reX);
+//        return reX;
+//    }
+//    public float getReY() {
+//        System.out.println("lastY : " + reY);
+//        return reY;
+//    }
+//    public float getXDifference() {
+//        System.out.println("xDifferent : " + xDifference);
+//        return xDifference;
+//    }
+//    public float getYDifference() {
+//        System.out.println("yDifferent : " + yDifference);
+//        return yDifference;
+//    }
 }

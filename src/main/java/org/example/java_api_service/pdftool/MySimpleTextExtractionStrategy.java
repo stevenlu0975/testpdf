@@ -1,4 +1,4 @@
-package org.example.javaAPIService.pdftool;
+package org.example.java_api_service.pdftool;
 
 import com.itextpdf.kernel.geom.LineSegment;
 import com.itextpdf.kernel.geom.Vector;
